@@ -1,7 +1,6 @@
 import scapy.all as scapy
 
 def extract_pcap_metadata(packets):
-    print(f"-------------EXTRACTING METADATA------------")
     metadata = {
         "source_ips": set(),
         "destination_ips": set(),
@@ -26,7 +25,7 @@ def extract_pcap_metadata(packets):
             if "User-Agent:" in payload:
                     try:
                         user_agent = payload.split("User-Agent: ")[1].split("\r\n")[0].strip()
-                        metadata["user_agents"] = user_agent
+                        metadata["user_agents"].add(user_agent)
                     except IndexError:
                         # Handle cases where the User-Agent header is malformed
                         user_agent = None
@@ -56,5 +55,4 @@ def extract_pcap_metadata(packets):
             domain = domain.rstrip('.')
             metadata["domains"].add(domain)
 
-    print(f"----------------METADATA EXTRACTION COMPLETE--------------------")
     return metadata

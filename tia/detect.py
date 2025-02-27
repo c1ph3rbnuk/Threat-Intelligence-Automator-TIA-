@@ -1,7 +1,6 @@
 import scapy.all as scapy
 
 def detect_malicious_requests(packets, suspicious_patterns):
-    print(f"-------------------DETECTING MALICIOUS REQUESTS-------------------------")
     malicious_requests = []
 
     for packet in packets:
@@ -41,6 +40,5 @@ def detect_malicious_requests(packets, suspicious_patterns):
                         "source_ip": packet[scapy.IP].src if packet.haslayer(scapy.IP) else "N/A"
                     })
 
-    print(f"-------------------DETECTION COMPLETE----------------------")
 
     return malicious_requests

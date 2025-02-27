@@ -18,6 +18,39 @@ def load_suspicious_patterns(file_path):
     with open(file_path, "r") as f:
         return json.load(f)
 
+def generate_report(metadata, ip_matches, domain_matches):
+    report = "# Security Analysis Report\n\n"
+    report += "## Introduction\nThis report summarizes the findings from the PCAP analysis and threat intelligence correlation.\n\n"
+    report += "## Scope and Objective\nAnalyze network traffic for suspicious activity and correlate findings with threat intelligence feeds.\n\n"
+
+    report += "## Findings\n"
+    report += "### Network Metadata\n"
+    metadata_table = {
+        "Source IPs": metadata["source_ips"],
+        "Destination IPs": metadata["destination_ips"],
+        "Protocols": metadata["protocols"],
+        "User Agents":metadata["user_agents"]
+    }
+    report += markdown_table(pd.DataFrame(metadata_table)).to_markdown(index=False) + "\n\n"
+
+    report += "### Threat Intelligence Matches\n"
+    threat_table = []
+    for ip, matches in ip_threat_matches.items():
+        for feed, result in matches.items():
+            threat_table.append({"IP": ip, "Feed": feed, "Result": str(result)})
+    report += markdown_table(pd.DataFrame(threat_table)).to_markdown(index=False) + "\n\n"
+
+    report += "## Recommendations\n"
+    report += "- Investigate suspicious IPs and user agents further.\n"
+    report += "- Block malicious IPs identified in threat intelligence feeds.\n\n"
+
+    report += "## References\n"
+    report += "- AbuseIPDB\n- VirusTotal\n- AlienVault OTX\n\n"
+
+    report += "## Conclusion\nThis analysis highlights potential threats in the network traffic. Further investigation is recommended.\n"
+
+    with open("security_report.md", "w") as f:
+        f.write(report)
 
 def main(pcap_file):
     suspicious_patterns = load_suspicious_patterns("suspicious-patterns.json")
@@ -53,41 +86,8 @@ def main(pcap_file):
 
     print(domain_threat_matches)
 
-    return ip_threat_matches, domain_threat_matches
+    generate_report(metadata, ip_threat_matches, domain_threat_matches)
 
-def generate_report(metadata, ip_threat_matches, domain_threat_matches):
-    report = "# Security Analysis Report\n\n"
-    report += "## Introduction\nThis report summarizes the findings from the PCAP analysis and threat intelligence correlation.\n\n"
-    report += "## Scope and Objective\nAnalyze network traffic for suspicious activity and correlate findings with threat intelligence feeds.\n\n"
-
-    report += "## Findings\n"
-    report += "### Network Metadata\n"
-    metadata_table = {
-        "Source IPs": list(metadata["source_ips"]),
-        "Destination IPs": list(metadata["destination_ips"]),
-        "Protocols": list(metadata["protocols"]),
-        "User Agents": list(metadata["user_agents"])
-    }
-    report += markdown_table(pd.DataFrame(metadata_table)).to_markdown(index=False) + "\n\n"
-
-    report += "### Threat Intelligence Matches\n"
-    threat_table = []
-    for ip, matches in threat_matches.items():
-        for feed, result in matches.items():
-            threat_table.append({"IP": ip, "Feed": feed, "Result": str(result)})
-    report += markdown_table(pd.DataFrame(threat_table)).to_markdown(index=False) + "\n\n"
-
-    report += "## Recommendations\n"
-    report += "- Investigate suspicious IPs and user agents further.\n"
-    report += "- Block malicious IPs identified in threat intelligence feeds.\n\n"
-
-    report += "## References\n"
-    report += "- AbuseIPDB\n- VirusTotal\n- AlienVault OTX\n\n"
-
-    report += "## Conclusion\nThis analysis highlights potential threats in the network traffic. Further investigation is recommended.\n"
-
-    with open("security_report.md", "w") as f:
-        f.write(report)
 
 if __name__ == "__main__":
     # Set up argument parsing

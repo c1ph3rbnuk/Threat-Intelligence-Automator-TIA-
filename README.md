@@ -12,8 +12,9 @@ Required Python libraries:
 1. Clone the Repository
 Clone the repository to your local machine:   
 
-`git clone https://github.com/your-username/threat-intelligence-tool.git
-cd threat-intelligence-tool`
+`git clone https://github.com/c1ph3rbnuk/Threat-Intelligence-Automator-TIA-.git`   
+
+`cd Threat-Intelligence-Automator-TIA\tia`
 
 ## Run the Tool
 Execute the script with the following command:

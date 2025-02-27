@@ -1,8 +1,8 @@
 import requests
 
 API_KEYS = {
-    "VirusTotal": "11951fc8ca67e60348eef508aa51102d25c6087e0d44ce11f600314060c04d73",
-    "AbuseIPDB": "184a06312a24a89550112cdae5e3bbdb81276569f71335094ecf73250478281a620be3e58505900e"
+    "VirusTotal": "xxxxxxxxxxxxxxxxxxxxxxx",
+    "AbuseIPDB": "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 }
 
@@ -17,7 +17,7 @@ def check_ip_reputation(ip, api):
     response = requests.get(url=api, headers=headers, params=querystring)
     if response.status_code == 200:
         ab_results = response.json()
-        if results["data"]["totalReports"] > 0:
+        if ab_results["data"]["totalReports"] > 0:
             # Extract the required fields
             abused = {
                 "ipAddress": data["data"]["ipAddress"],

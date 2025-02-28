@@ -41,7 +41,7 @@ def generate_report(metadata, ip_matches, domain_matches):
     ]
 
     # Generate the report
-    report += markdown_table(metadata_table).get_markdown() + "\n"
+    report += markdown_table(metadata_table).set_params(row_sep = 'markdown', quote = False).get_markdown() + "\n"
 
     report += "#### Threat Intelligence Matches\n"
     if ip_matches:
@@ -54,7 +54,7 @@ def generate_report(metadata, ip_matches, domain_matches):
                 "Feed": details["feed"],
                 "Abuse Confidence Score": details["abuseConfidenceScore"]
             })
-        report += markdown_table(table_data).get_markdown() + "\n"
+        report += markdown_table(table_data).set_params(row_sep = 'markdown', quote = False).get_markdown() + "\n"
     else:
         report+= "No Malicious Ips Identified!!!!\n"
 
@@ -68,16 +68,16 @@ def generate_report(metadata, ip_matches, domain_matches):
                 "Feed": details["feed"],
                 "Threat type": details["data"]["threat_type"]
             })
-        report += markdown_table(domain_data).get_markdown() + "\n"
+        report += markdown_table(domain_data).set_params(row_sep = 'markdown', quote = False).get_markdown() + "\n"
     else:
-        report+= "No Malicious Domains Identified!!!!\n"
+        report+= "\nNo Malicious Domains Identified!!!!\n"
 
     report += "### Recommendations\nBased on the findings of this analysis, the following recommendations are provided to mitigate identified threats\n"
     report += "- Investigate suspicious IPs and user agents further.\n"
     report += "- Block malicious IPs identified in threat intelligence feeds.\n"
 
     report += "## References\n"
-    report += "- AbuseIPDB\n- VirusTotal\n"
+    report += "- AbuseIPDB\n- VirusTotal\n- ThreatFox\n"
 
     report += "## Conclusion\nThis analysis highlights potential threats in the network traffic. Further investigation is recommended.\n"
 

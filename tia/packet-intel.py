@@ -81,11 +81,12 @@ def generate_report(metadata, ip_matches, domain_matches):
 
     report += "## Conclusion\nThis analysis highlights potential threats in the network traffic. Further investigation is recommended.\n"
 
-    with open("security_report1.md", "w") as f:
+    with open("security_report.md", "w") as f:
         return f.write(report)
 
 
 def main(pcap_file):
+
     print(f"[*] Loading detection patterns")
     suspicious_patterns = load_suspicious_patterns("suspicious-patterns.json")
     packets = scapy.rdpcap(pcap_file)

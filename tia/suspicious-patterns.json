@@ -1,5 +1,5 @@
 {
   "suspicious_user_agents": ["sqlmap", "nikto", "wget", "curl"],
-  "suspicious_uris": ["/wp-admin", "/phpmyadmin", "/shell", ".exe", ".php", ".sh", "script", "OR", "'", "alert", ";"],
+  "suspicious_uris": ["shell", ".exe", ".sh", "script", "OR", "'", "alert", ";"],
   "suspicious_methods": ["PUT", "DELETE", "CONNECT"]
 }

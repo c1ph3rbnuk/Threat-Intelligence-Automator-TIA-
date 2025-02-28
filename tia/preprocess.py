@@ -6,7 +6,6 @@ def extract_pcap_metadata(packets):
         "destination_ips": set(),
         "protocols": set(),
         "user_agents": set(),
-        "urls": set(),
         "domains": set()
     }
 
@@ -15,10 +14,10 @@ def extract_pcap_metadata(packets):
             metadata["source_ips"].add(packet[scapy.IP].src)
             metadata["destination_ips"].add(packet[scapy.IP].dst)
 
-        if packet.haslayer(scapy.TCP):
-            metadata["protocols"].add("TCP")
-        elif packet.haslayer(scapy.UDP):
-            metadata["protocols"].add("UDP")
+        for layer in packet.layers():
+            protocol_name = layer.__name__
+            metadata["protocols"].add(protocol_name)
+
 
         if packet.haslayer(scapy.Raw):
             payload = packet[scapy.Raw].load.decode(errors="ignore")
@@ -29,26 +28,6 @@ def extract_pcap_metadata(packets):
                     except IndexError:
                         # Handle cases where the User-Agent header is malformed
                         user_agent = None
-
-            '''if "HTTP" in payload:
-                # Extract the request line (e.g., "GET /index.html HTTP/1.1")
-                request_line = payload.split("\r\n")[0]
-                if request_line[0].startswith(("GET", "POST", "PUT", "DELETE", "HEAD")):
-                    method, path, _ = request_line.split(" ")
-
-                    # Extract the Host header (if present)
-                    host = None
-                    if "Host:" in payload:
-                        try:
-                            host = payload.split("Host: ")[1].split("\r\n")[0].strip()
-                        except IndexError:
-                            # Handle cases where the Host header is malformed
-                            host = None
-
-                    # Construct the full URL
-                    if host and path:
-                        url = f"http://{host}{path}"
-                        metadata["urls"].add(url)'''
 
         if packet.haslayer(scapy.DNSQR):
             domain = packet[scapy.DNSQR].qname.decode()

@@ -17,7 +17,14 @@ Clone the repository to your local machine:
 
 `git clone https://github.com/c1ph3rbnuk/Threat-Intelligence-Automator-TIA-.git`   
 
-`cd Threat-Intelligence-Automator-TIA\tia`
+`cd Threat-Intelligence-Automator-TIA\tia`   
+
+2. Add your api keys under **correlate.py** file   
+`API_KEYS = {
+    "VirusTotal": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "AbuseIPDB": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "ThreatFox": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+}`
 
 ## Run the Tool
 Execute the script with the following command:
